@@ -1,9 +1,17 @@
 from dotenv import load_dotenv
 from flask import Flask
 from app.models import db
+from app.models.categoria import Categoria  
+from app.models.movimiento_stock import MovimientoStock  
+from app.models.producto import Producto 
+from app.models.proveedor import Proveedor  
+from app.models.rol import Rol 
+from app.models.user import User  
 from app.config import config
-from app.routes.user_routes import users
-from app.routes.rol_routes import roles
+from app.routes.categoria_routes import categorias
+from app.routes.movimiento_stock_routes import movimientos
+from app.routes.producto_routes import productos
+from app.routes.proveedor_routes import proveedores
 from app.routes.auth_routes import auth_bp
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
@@ -17,9 +25,11 @@ def create_app():
     app = Flask(__name__)
     env = os.getenv('FLASK_ENV', 'development')
     app.config.from_object(config[env])
-    app.register_blueprint(users)
-    app.register_blueprint(roles)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(categorias)
+    app.register_blueprint(proveedores)
+    app.register_blueprint(productos)
+    app.register_blueprint(movimientos)
     
     @app.route('/')
     @app.route('/<nombre>')    
