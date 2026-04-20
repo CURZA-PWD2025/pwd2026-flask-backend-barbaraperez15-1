@@ -14,7 +14,7 @@ from app.routes.producto_routes import productos
 from app.routes.proveedor_routes import proveedores
 from app.routes.auth_routes import auth_bp
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, jwt_required
 
 load_dotenv(override = True)
 import os
@@ -33,12 +33,14 @@ def create_app():
     
     @app.route('/')
     @app.route('/<nombre>')    
+    @jwt_required()
     def home(nombre = None):
         if (nombre == None):
             return f' <h1>Hola  desde programacion web dinamica 2026<h1>'
         return f'Hola {nombre} te saludamos desde programacion web dinamica 2026'
 
     @app.route('/saludo')
+    @jwt_required()
     def saludo():
         return f'Hola desde programacion web dinamica 2026 saludo'
     db.init_app(app)
